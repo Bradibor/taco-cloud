@@ -26,8 +26,8 @@ import static java.util.stream.Collectors.groupingBy;
 @RequestMapping("/design")
 public class DesignTacoController {
 
-    @GetMapping
-    public String showDesignForm(Model model) {
+    @ModelAttribute
+    public void initIngredients(Model model) {
         List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
                 new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
@@ -44,12 +44,16 @@ public class DesignTacoController {
                 .collect(groupingBy(Ingredient::getType, Collectors.toList()));
         Arrays.stream(Type.values())
                 .forEach(type-> model.addAttribute(type.toString().toLowerCase(), ingredientsByType.getOrDefault(type, Collections.emptyList())));
+    }
+
+    @GetMapping
+    public String showDesignForm(Model model) {
         model.addAttribute("design", new Taco());
         return "design";
     }
 
     @PostMapping
-    public String design(@Valid Taco design, Errors errors) {
+    public String design(@Valid @ModelAttribute("design") Taco design, Errors errors, Model model) {
         if (errors.hasErrors()) {
             return "design";
         }
