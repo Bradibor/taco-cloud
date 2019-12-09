@@ -17,5 +17,5 @@ public class Taco {
     private String name;
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<String> ingredients = Collections.emptyList();
+    private List<Ingredient> ingredients = Collections.emptyList();
 }
