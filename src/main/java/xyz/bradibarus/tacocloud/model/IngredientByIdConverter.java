@@ -11,6 +11,6 @@ public class IngredientByIdConverter  implements Converter<String, Ingredient> {
 
     @Override
     public Ingredient convert(String s) {
-        return ingredientRepository.findOne(s);
+        return ingredientRepository.findById(s).orElseThrow(()->new IllegalArgumentException("No such ingredient founder " + s));
     }
 }
